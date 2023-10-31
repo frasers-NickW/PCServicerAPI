@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import jobsRoute from "./routes/jobs.js";
+import userRoute from "./routes/users.js";
 
 const app = express();
 dotenv.config();
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use(express.json());
 
 app.use("/jobs", jobsRoute)
+app.use("/users", userRoute)
 
 app.listen(8800, () => {
     connect();

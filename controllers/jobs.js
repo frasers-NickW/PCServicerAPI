@@ -1,14 +1,34 @@
-import Job from "../models/Jobs.js";
+import jobs from "../models/Jobs.js"
 
-export const createJob = async(req, res, next) => {
-    const newJob = new Job(req.body);
+export const createJob = async(req, res, next) => {            
+    const newJob = new jobs.job({
+        name: req.body.name,
+        status: req.body.status,
+        type: req.body.type,
+        description: req.body.description
+    });                    
+
+    const subJobItems = req.body.subJobs;          
+
+    subJobItems.forEach((item) => {
+        const newSubJob = new jobs.subJob({
+            job: newJob._id,
+            name: item.name,
+            status: item.status,
+            type: item.type,
+            description: item.description,
+        });
+        
+        newSubJob.save();
+        newJob.subJobs.push(newSubJob._id)
+    })                
 
     try {
-        const savedJob = await newJob.save()
+        const savedJob = await newJob.save()    
         res.status(200).json(savedJob);
     } catch (err) {
         next(err);
-    }
+    }    
 }
 
 export const updateJob = async(req, res, next) => {
