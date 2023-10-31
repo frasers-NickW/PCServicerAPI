@@ -36,7 +36,7 @@ export const registerUser = async(req, res, next) => {
     
         user.token = token;
 
-        await user.save();
+        await user.save();        
     
         res.status(201).json(user);
     } catch (err) {
